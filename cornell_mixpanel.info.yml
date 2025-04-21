@@ -1,0 +1,7 @@
+name: 'Cornell Mixpanel'
+type: module
+description: 'A module to load Mixpanel token and interact with dashboard.'
+package: Custom
+core_version_requirement: ^10
+configure: cornell_mixpanel.settings
+

@@ -1,0 +1,9 @@
+cornell_mixpanel:
+  js:
+    js/cornell_mixpanel.js: {}
+  dependencies:
+    - core/jquery
+    - core/drupal
+    - core/drupalSettings
+    - core/once
+    - core/drupal.once

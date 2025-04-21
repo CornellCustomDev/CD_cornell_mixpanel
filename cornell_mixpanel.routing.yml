@@ -1,0 +1,7 @@
+cornell_mixpanel.settings:
+  path: '/admin/config/cornell_mixpanel'
+  defaults:
+    _form: '\Drupal\cornell_mixpanel\Form\CornellMixpanelAnalyticsSettings'
+    _title: 'Cornell Mixpanel configuration'
+  requirements:
+    _permission: 'administer cornell_mixpanel'

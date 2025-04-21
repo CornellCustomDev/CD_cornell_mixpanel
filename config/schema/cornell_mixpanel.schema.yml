@@ -1,0 +1,31 @@
+cornell_mixpanel.settings:
+  type: config
+  label: 'Cornell Mixpanel Settings'
+  mapping:
+    cornell_mixpanel_token:
+      type: string
+      label: 'Cornell Mixpanel Token'
+    cornell_mixpanel_prod_proxy_domain:
+      type: string
+      label: 'Production Proxy Domain'
+    cornell_mixpanel_test_token:
+      type: string
+      label: 'Test Token'
+    cornell_mixpanel_send_to_test:
+      type: boolean
+      label: 'Send to Test'
+    cornell_mixpanel_debug_mode:
+      type: boolean
+      label: 'Debug Mode'
+    cornell_mixpanel_ignore_dnt:
+      type: boolean
+      label: 'Ignore Do Not Track'
+    cornell_mixpanel_cross_subdomain_cookie:
+      type: boolean
+      label: 'Cross Subdomain Cookie'
+    cornell_mixpanel_track_only_anonymous:
+      type: boolean
+      label: 'Track Only Anonymous'
+    cornell_mixpanel_ignore_admin_routes:
+      type: boolean
+      label: 'Ignore Admin Routes'
