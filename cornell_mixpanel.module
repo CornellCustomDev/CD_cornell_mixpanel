@@ -37,8 +37,6 @@ function cornell_mixpanel_preprocess_page(&$variables)
         return;
     }
     
-    // $mixpanel_config['proxy_server'] = rtrim(trim($config->get('cornell_mixpanel_prod_proxy_domain')), '/');
-    
     $mixpanel_config = [];
     $proxy_config = $config->get('cornell_mixpanel_prod_proxy_domain');
     if($proxy_config && $proxy_config != "") {
@@ -60,11 +58,6 @@ function cornell_mixpanel_preprocess_page(&$variables)
     $mixpanel_config['debug_mode'] = (bool) $config->get('cornell_mixpanel_debug_mode');
     $mixpanel_config['ignore_dnt'] = (bool) $config->get('cornell_mixpanel_ignore_dnt');
     
-    if(empty($mixpanel_config['proxy_server'])) {
-        return;
-    }
-
     $variables['#attached']['library'][] = 'cornell_mixpanel/cornell_mixpanel';
     $variables['#attached']['drupalSettings']['cornell_mixpanel'] = json_encode($mixpanel_config);
-    
 }

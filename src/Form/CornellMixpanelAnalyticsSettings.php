@@ -39,11 +39,10 @@ class CornellMixpanelAnalyticsSettings extends ConfigFormBase {
       '#collapsible' => FALSE,
       '#collapsed' => FALSE,
     ];
-
     $form['mixpanel_proxy_info']['cornell_mixpanel_prod_proxy_domain'] = [
-      '#title' => $this->t('Mixpanel PRODUCTION Proxy Domain'),
+      '#title' => $this->t('Mixpanel Proxy Domain'),
       '#type' => 'textfield',
-      '#description' => $this->t('The full proxy server domain or IP address.'),
+      '#description' => $this->t('The full proxy server domain or IP address tat will proxy mixpanel events.'),
       '#default_value' => $config->get('cornell_mixpanel_prod_proxy_domain'),
     ];
 
@@ -54,17 +53,17 @@ class CornellMixpanelAnalyticsSettings extends ConfigFormBase {
       '#collapsible' => FALSE,
       '#collapsed' => FALSE,
     ];
-    $form['mixpanel_tokens']['cornell_mixpanel_token'] = [
-      '#title' => $this->t('Mixpanel PRODUCTION Token'),
-      '#type' => 'textfield',
-      '#description' => $this->t('The token from mixpanel.com for this PRODUCTION (Live) project. REQUIRED for Mixpanel events to be sent.'),
-      '#default_value' => $config->get('cornell_mixpanel_token'),
-    ];
     $form['mixpanel_tokens']['cornell_mixpanel_test_token'] = [
       '#title' => $this->t('Mixpanel DEVELOPMENT Token'),
       '#type' => 'textfield',
       '#description' => $this->t('The token from mixpanel.com for this DEVELOPMENT (Non-Live) project. REQUIRED for Mixpanel events to be sent.'),
       '#default_value' => $config->get('cornell_mixpanel_test_token'),
+    ];
+    $form['mixpanel_tokens']['cornell_mixpanel_token'] = [
+      '#title' => $this->t('Mixpanel PRODUCTION Token'),
+      '#type' => 'textfield',
+      '#description' => $this->t('The token from mixpanel.com for this PRODUCTION (Live) project. REQUIRED for Mixpanel events to be sent.'),
+      '#default_value' => $config->get('cornell_mixpanel_token'),
     ];
 
     $form['other'] = [
@@ -146,17 +145,14 @@ class CornellMixpanelAnalyticsSettings extends ConfigFormBase {
     // Check if we are live on Pantheon
     if (isset($_ENV['PANTHEON_ENVIRONMENT']) && $_ENV['PANTHEON_ENVIRONMENT'] === 'live') {
       // On live environment
-      if (empty($form_state->getValue('cornell_mixpanel_token')) && !empty($form_state->getValue('cornell_mixpanel_prod_proxy_domain'))) {
-        $form_state->setErrorByName('cornell_mixpanel_token', $this->t('You must enter a PRODUCTION mixpanel token for the PRODUCTION proxy domain.'));
-      }
-      if (empty($form_state->getValue('cornell_mixpanel_prod_proxy_domain')) && !empty($form_state->getValue('cornell_mixpanel_token'))) {
-        $form_state->setErrorByName('cornell_mixpanel_prod_proxy_domain', $this->t('You must enter a PRODUCTION proxy domain for the PRODUCTION mixpanel token.'));
+      if (empty($form_state->getValue('cornell_mixpanel_token'))) {
+        $form_state->setErrorByName('cornell_mixpanel_token', $this->t('You must enter a Production mixpanel token.'));
       }
     }
     else {
       // On dev environment
-      if (empty($form_state->getValue('cornell_mixpanel_test_token')) && !empty($form_state->getValue('cornell_mixpanel_dev_proxy_domain'))) {
-        $form_state->setErrorByName('cornell_mixpanel_test_token', $this->t('You must enter a Test mixpanel token for the Test proxy domain.'));
+      if (empty($form_state->getValue('cornell_mixpanel_test_token'))) {
+        $form_state->setErrorByName('cornell_mixpanel_test_token', $this->t('You must enter a Test mixpanel token.'));
       }
     }
   }
