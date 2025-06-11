@@ -23,6 +23,9 @@ cornell_mixpanel.settings:
     cornell_mixpanel_cross_subdomain_cookie:
       type: boolean
       label: 'Cross Subdomain Cookie'
+    cornell_mixpanel_domains_to_track:
+      type: string
+      label: 'Domains to Track'
     cornell_mixpanel_track_only_anonymous:
       type: boolean
       label: 'Track Only Anonymous'

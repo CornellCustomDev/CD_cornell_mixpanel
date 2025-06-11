@@ -4,60 +4,67 @@
  * Implements hook_permission().
  */
 function cornell_mixpanel_permission() {
-    return [
-        'administer cornell_mixpanel' => [
-            'title' => t('Administer Cornell Mixpanel'),
-            'description' => t('Set Mixpanel token and change other internal settings for Mixpanel integration.'),
-        ],
-    ];
+  return [
+    'administer cornell_mixpanel' => [
+      'title' => t('Administer Cornell Mixpanel'),
+      'description' => t('Set Mixpanel token and change other internal settings for Mixpanel integration.'),
+    ],
+  ];
 }
 
 /**
  * Implements hook_help().
  */
 function cornell_mixpanel_help($route_name, \Drupal\Core\Routing\RouteMatchInterface $route_match) {
-    switch ($route_name) {
-        case 'help.page.cornell_mixpanel':
-            return '<p>' . t('Provides integration with the Mixpanel real-time analytics service. <strong>For more information, see the <a href="!docs_url" target="_blank">full documentation</a> online.</strong>', [
-                    '!docs_url' => 'https://drupal.org/node/2096053',
-                ]) . '</p>';
-    }
+  switch ($route_name) {
+    case 'help.page.cornell_mixpanel':
+      return '<p>' . t('Provides integration with the Mixpanel real-time analytics service. <strong>For more information, see the <a href="!docs_url" target="_blank">full documentation</a> online.</strong>', [
+        '!docs_url' => 'https://drupal.org/node/2096053',
+      ]) . '</p>';
+  }
 }
-function cornell_mixpanel_preprocess_page(&$variables)
-{
-    $config = \Drupal::config('cornell_mixpanel.settings');
-    
-    $user = \Drupal::currentUser();
-    if ($config->get('cornell_mixpanel_track_only_anonymous') && $user->isAuthenticated()) {
-        return;
-    }
-    
-    $route_name = \Drupal::routeMatch()->getRouteName();
-    if ($config->get('cornell_mixpanel_ignore_admin_routes') && strpos($route_name, 'admin') !== false) {
-        return;
-    }
-    
-    $mixpanel_config = [];
-    $proxy_config = $config->get('cornell_mixpanel_prod_proxy_domain');
-    if($proxy_config && $proxy_config != "") {
-        $proxy_config = rtrim(trim($proxy_config), '/');
-    }
-    else {
-        $proxy_config = "https://api-js.mixpanel.com";
-    }
-    $mixpanel_config['proxy_server'] = $proxy_config;
+function cornell_mixpanel_preprocess_page(&$variables) {
+  $config = \Drupal::config('cornell_mixpanel.settings');
 
-    if (isset($_ENV['PANTHEON_ENVIRONMENT']) && $_ENV['PANTHEON_ENVIRONMENT'] === 'live') {
-        $mixpanel_config['token'] = trim($config->get('cornell_mixpanel_token'));
+  $domains_to_track = $config->get('cornell_mixpanel_domains_to_track');
+  if ($domains_to_track) {
+    $domains_to_track = array_map('trim', explode(',', $domains_to_track));
+    $current_domain = \Drupal::request()->getHost();
+    if (!in_array($current_domain, $domains_to_track)) {
+      return;
     }
-    else {
-        $mixpanel_config['token'] = trim($config->get('cornell_mixpanel_test_token'));
-    }
+  }
 
-    $mixpanel_config['cross_subdomain_cookie'] = (bool) $config->get('cornell_mixpanel_cross_subdomain_cookie');
-    $mixpanel_config['debug_mode'] = (bool) $config->get('cornell_mixpanel_debug_mode');
-    $mixpanel_config['ignore_dnt'] = (bool) $config->get('cornell_mixpanel_ignore_dnt');
-    
-    $variables['#attached']['library'][] = 'cornell_mixpanel/cornell_mixpanel';
-    $variables['#attached']['drupalSettings']['cornell_mixpanel'] = json_encode($mixpanel_config);
+  $user = \Drupal::currentUser();
+  if ($config->get('cornell_mixpanel_track_only_anonymous') && $user->isAuthenticated()) {
+    return;
+  }
+
+  $route_name = \Drupal::routeMatch()->getRouteName();
+  if ($config->get('cornell_mixpanel_ignore_admin_routes') && strpos($route_name, 'admin') !== FALSE) {
+    return;
+  }
+
+  $mixpanel_config = [];
+  $proxy_config = $config->get('cornell_mixpanel_prod_proxy_domain');
+  if ($proxy_config && $proxy_config != "") {
+    $proxy_config = rtrim(trim($proxy_config), '/');
+  }
+  else {
+    $proxy_config = "https://api-js.mixpanel.com";
+  }
+  $mixpanel_config['proxy_server'] = $proxy_config;
+  if (isset($_ENV['PANTHEON_ENVIRONMENT']) && $_ENV['PANTHEON_ENVIRONMENT'] === 'live') {
+    $mixpanel_config['token'] = trim($config->get('cornell_mixpanel_token'));
+  }
+  else {
+    $mixpanel_config['token'] = trim($config->get('cornell_mixpanel_test_token'));
+  }
+
+  $mixpanel_config['cross_subdomain_cookie'] = (bool) $config->get('cornell_mixpanel_cross_subdomain_cookie');
+  $mixpanel_config['debug_mode'] = (bool) $config->get('cornell_mixpanel_debug_mode');
+  $mixpanel_config['ignore_dnt'] = (bool) $config->get('cornell_mixpanel_ignore_dnt');
+
+  $variables['#attached']['library'][] = 'cornell_mixpanel/cornell_mixpanel';
+  $variables['#attached']['drupalSettings']['cornell_mixpanel'] = json_encode($mixpanel_config);
 }

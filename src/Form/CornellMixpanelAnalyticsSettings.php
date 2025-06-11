@@ -101,6 +101,13 @@ class CornellMixpanelAnalyticsSettings extends ConfigFormBase {
       '#collapsible' => FALSE,
       '#collapsed' => FALSE,
     ];
+    $form['drupal_specific']['cornell_mixpanel_domains_to_track'] = [
+      '#type' => 'textarea',
+      '#title' => $this->t('Domains to track'),
+      '#description' => $this->t('Enter the domains to track, separated by commas. For example: <em>example.com, sub.example.com</em>. If none are entered, all domains will be tracked.'),
+      '#rows' => 5,
+      '#default_value' => $config->get('cornell_mixpanel_domains_to_track'),
+    ];
     $form['drupal_specific']['cornell_mixpanel_track_only_anonymous'] = [
       '#title' => $this->t('Track only anonymous users'),
       '#type' => 'checkbox',
@@ -132,6 +139,7 @@ class CornellMixpanelAnalyticsSettings extends ConfigFormBase {
       ->set('cornell_mixpanel_cross_subdomain_cookie', $form_state->getValue('cornell_mixpanel_cross_subdomain_cookie'))
       ->set('cornell_mixpanel_track_only_anonymous', $form_state->getValue('cornell_mixpanel_track_only_anonymous'))
       ->set('cornell_mixpanel_ignore_admin_routes', $form_state->getValue('cornell_mixpanel_ignore_admin_routes'))
+      ->set('cornell_mixpanel_domains_to_track', $form_state->getValue('cornell_mixpanel_domains_to_track'))
       // Save the configuration
       ->save();
 
