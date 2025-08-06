@@ -120,6 +120,12 @@ class CornellMixpanelAnalyticsSettings extends ConfigFormBase {
       '#description' => $this->t('Enabling this will ignore admin paths.'),
       '#default_value' => $config->get('cornell_mixpanel_ignore_admin_routes'),
     ];
+    $form['drupal_specific']['cornell_mixpanel_use_heatmap'] = [
+      '#title' => $this->t('Use Heatmap'),
+      '#type' => 'checkbox',
+      '#description' => $this->t('Enabling this will allow the use of heatmaps in Mixpanel.'),
+      '#default_value' => $config->get('cornell_mixpanel_use_heatmap'),
+    ];
 
     return parent::buildForm($form, $form_state);
   }
@@ -140,6 +146,7 @@ class CornellMixpanelAnalyticsSettings extends ConfigFormBase {
       ->set('cornell_mixpanel_track_only_anonymous', $form_state->getValue('cornell_mixpanel_track_only_anonymous'))
       ->set('cornell_mixpanel_ignore_admin_routes', $form_state->getValue('cornell_mixpanel_ignore_admin_routes'))
       ->set('cornell_mixpanel_domains_to_track', $form_state->getValue('cornell_mixpanel_domains_to_track'))
+      ->set('cornell_mixpanel_use_heatmap', $form_state->getValue('cornell_mixpanel_use_heatmap'))
       // Save the configuration
       ->save();
 

@@ -109,6 +109,7 @@
         api_host: configObj.proxy_server,
         ignore_dnt: configObj.ignore_dnt,
         cross_subdomain_cookie: configObj.cross_subdomain_cookie,
+        record_heatmap_data: configObj.use_heatmap,
       });
     },
     // Function to initialize nav link tracking

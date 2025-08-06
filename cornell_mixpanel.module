@@ -64,6 +64,7 @@ function cornell_mixpanel_preprocess_page(&$variables) {
   $mixpanel_config['cross_subdomain_cookie'] = (bool) $config->get('cornell_mixpanel_cross_subdomain_cookie');
   $mixpanel_config['debug_mode'] = (bool) $config->get('cornell_mixpanel_debug_mode');
   $mixpanel_config['ignore_dnt'] = (bool) $config->get('cornell_mixpanel_ignore_dnt');
+  $mixpanel_config['use_heatmap'] = (bool) $config->get('cornell_mixpanel_use_heatmap');
 
   $variables['#attached']['library'][] = 'cornell_mixpanel/cornell_mixpanel';
   $variables['#attached']['drupalSettings']['cornell_mixpanel'] = json_encode($mixpanel_config);

@@ -32,3 +32,6 @@ cornell_mixpanel.settings:
     cornell_mixpanel_ignore_admin_routes:
       type: boolean
       label: 'Ignore Admin Routes'
+    cornell_mixpanel_use_heatmap:
+      type: boolean
+      label: 'Use Heatmap'
