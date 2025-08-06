@@ -102,6 +102,11 @@
         return;
       }
       const configObj = JSON.parse(settings.cornell_mixpanel);
+      if (configObj.use_heatmap) {
+        configObj.record_sessions_percent = 1;
+      } else {
+        configObj.record_sessions_percent = 0;
+      }
       mixpanel.init(configObj.token, {
         debug: configObj.debug_mode,
         track_pageview: true,
@@ -110,6 +115,7 @@
         ignore_dnt: configObj.ignore_dnt,
         cross_subdomain_cookie: configObj.cross_subdomain_cookie,
         record_heatmap_data: configObj.use_heatmap,
+        record_sessions_percent: configObj.record_sessions_percent,
       });
     },
     // Function to initialize nav link tracking
