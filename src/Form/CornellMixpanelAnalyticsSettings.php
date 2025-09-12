@@ -173,13 +173,6 @@ class CornellMixpanelAnalyticsSettings extends ConfigFormBase {
     if (empty($form_state->getValue('cornell_mixpanel_test_token'))) {
       $form_state->setErrorByName('cornell_mixpanel_test_token', $this->t('You must enter a Test mixpanel token.'));
     }
-    // // Check if we are live on Pantheon
-    // if (isset($_ENV['PANTHEON_ENVIRONMENT']) && $_ENV['PANTHEON_ENVIRONMENT'] === 'live') {
-    //   // On live environment
-    // }
-    // else {
-    //   // On dev environment
-    // }
   }
 
 }
