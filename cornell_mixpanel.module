@@ -25,14 +25,31 @@ function cornell_mixpanel_help($route_name, \Drupal\Core\Routing\RouteMatchInter
 }
 function cornell_mixpanel_preprocess_page(&$variables) {
   $config = \Drupal::config('cornell_mixpanel.settings');
-
+  $found_domain = FALSE;
+  $found_production_domain = FALSE;
+  $found_non_production_domain = FALSE;
   $domains_to_track = $config->get('cornell_mixpanel_domains_to_track');
   if ($domains_to_track) {
     $domains_to_track = array_map('trim', explode(',', $domains_to_track));
     $current_domain = \Drupal::request()->getHost();
-    if (!in_array($current_domain, $domains_to_track)) {
-      return;
+    if (in_array($current_domain, $domains_to_track)) {
+      $found_domain = TRUE;
+      $found_production_domain = TRUE;
     }
+  }
+
+  $non_prod_domains_to_track = $config->get('cornell_mixpanel_non_production_domains');
+  if ($non_prod_domains_to_track) {
+    $non_prod_domains_to_track = array_map('trim', explode(',', $non_prod_domains_to_track));
+    $current_domain = \Drupal::request()->getHost();
+    if (in_array($current_domain, $non_prod_domains_to_track)) {
+      $found_domain = TRUE;
+      $found_non_production_domain = TRUE;
+    }
+  }
+
+  if (!$found_domain) {
+    return;
   }
 
   $user = \Drupal::currentUser();
@@ -54,16 +71,22 @@ function cornell_mixpanel_preprocess_page(&$variables) {
     $proxy_config = "https://api-js.mixpanel.com";
   }
   $mixpanel_config['proxy_server'] = $proxy_config;
-  if (isset($_ENV['PANTHEON_ENVIRONMENT']) && $_ENV['PANTHEON_ENVIRONMENT'] === 'live') {
+
+  if ($found_production_domain) {
     $mixpanel_config['token'] = trim($config->get('cornell_mixpanel_token'));
   }
-  else {
+  elseif ($found_non_production_domain) {
     $mixpanel_config['token'] = trim($config->get('cornell_mixpanel_test_token'));
+  }
+  else {
+    // should never happen because of earlier check
+    return;
   }
 
   $mixpanel_config['cross_subdomain_cookie'] = (bool) $config->get('cornell_mixpanel_cross_subdomain_cookie');
   $mixpanel_config['debug_mode'] = (bool) $config->get('cornell_mixpanel_debug_mode');
   $mixpanel_config['ignore_dnt'] = (bool) $config->get('cornell_mixpanel_ignore_dnt');
+  $mixpanel_config['use_heatmap'] = (bool) $config->get('cornell_mixpanel_use_heatmap');
 
   $variables['#attached']['library'][] = 'cornell_mixpanel/cornell_mixpanel';
   $variables['#attached']['drupalSettings']['cornell_mixpanel'] = json_encode($mixpanel_config);
