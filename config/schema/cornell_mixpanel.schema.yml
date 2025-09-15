@@ -25,7 +25,7 @@ cornell_mixpanel.settings:
       label: 'Cross Subdomain Cookie'
     cornell_mixpanel_domains_to_track:
       type: string
-      label: 'Domains to Track'
+      label: 'Production Domains to track'
     cornell_mixpanel_non_production_domains:
       type: string
       label: 'Non-Production Domains'
