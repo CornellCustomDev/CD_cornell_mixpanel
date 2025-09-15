@@ -103,8 +103,8 @@ class CornellMixpanelAnalyticsSettings extends ConfigFormBase {
     ];
     $form['drupal_specific']['cornell_mixpanel_domains_to_track'] = [
       '#type' => 'textarea',
-      '#title' => $this->t('Domains to track'),
-      '#description' => $this->t('Enter the domains to track, separated by commas. For example: <em>example.com, sub.example.com</em>. If none are entered, all domains will be tracked.'),
+      '#title' => $this->t('Production Domains to track'),
+      '#description' => $this->t('Enter the domains to track, separated by commas. For example: <em>example.com, sub.example.com</em>. You must specify at least one domain to use mixpanel tracking.'),
       '#rows' => 5,
       '#default_value' => $config->get('cornell_mixpanel_domains_to_track'),
     ];
@@ -112,7 +112,7 @@ class CornellMixpanelAnalyticsSettings extends ConfigFormBase {
     $form['drupal_specific']['cornell_mixpanel_non_production_domains'] = [
       '#type' => 'textarea',
       '#title' => $this->t('Non-Production Domains - to track with Test Token'),
-      '#description' => $this->t('Enter the non-production domains, separated by commas. For example: <em>example.com, sub.example.com</em>. If none are entered, all domains will be tracked.'),
+      '#description' => $this->t('Enter the non-production domains, separated by commas. For example: <em>example.com, sub.example.com</em>. You must specify at least one domain to use mixpanel tracking.'),
       '#rows' => 5,
       '#default_value' => $config->get('cornell_mixpanel_non_production_domains'),
     ];
