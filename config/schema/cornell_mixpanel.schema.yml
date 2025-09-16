@@ -25,10 +25,16 @@ cornell_mixpanel.settings:
       label: 'Cross Subdomain Cookie'
     cornell_mixpanel_domains_to_track:
       type: string
-      label: 'Domains to Track'
+      label: 'Production Domains to track'
+    cornell_mixpanel_non_production_domains:
+      type: string
+      label: 'Non-Production Domains'
     cornell_mixpanel_track_only_anonymous:
       type: boolean
       label: 'Track Only Anonymous'
     cornell_mixpanel_ignore_admin_routes:
       type: boolean
       label: 'Ignore Admin Routes'
+    cornell_mixpanel_use_heatmap:
+      type: boolean
+      label: 'Use Heatmap'
